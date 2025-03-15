@@ -1,0 +1,15 @@
+[package]
+name = "home4strays"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+leptos = { version = "0.7.7", features = ["csr"] }
+sqlx = "0.8.3"
+stylance = "0.5.5"
+
+[package.metadata.stylance]
+extensions = [".module.scss", ".module.css", "min.css"]
+[rust-analyzer]
+files.exclude = "/nix/"
+files.watcherExclude = "/nix/"
