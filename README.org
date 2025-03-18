@@ -1,0 +1,13 @@
+#+title: Home4Strays
+
+* Description
+This project aims to create a mobile/web application that connects Non-Governmental Organizations (NGOs) with potential pet caretakers. The app facilitates finding temporary or permanent homes for street animals through trusted NGOs, ensuring professional and secure placement.
+
+## Installation
+
+To set up the project:
+
+#+begin_src bash
+cargo build
+cargo leptos watch
+#+end_src

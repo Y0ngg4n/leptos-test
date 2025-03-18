@@ -1,0 +1,8 @@
+CREATE TABLE pet_sitters (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  name VARCHAR NOT NULL,
+  capacity INTEGER NOT NULL,
+  status VARCHAR NOT NULL,
+  description TEXT NOT NULL,
+  duration INTEGER NOT NULL
+)
