@@ -3,9 +3,12 @@
 async fn main() {
     use axum::Router;
     use home4strays::app::*;
+    use home4strays::establish_connection;
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
+
+    let db_connection = establish_connection().await;
 
     let conf = get_configuration(None).unwrap();
     let addr = conf.leptos_options.site_addr;
@@ -19,7 +22,8 @@ async fn main() {
             move || shell(leptos_options.clone())
         })
         .fallback(leptos_axum::file_and_error_handler(shell))
-        .with_state(leptos_options);
+        .with_state(leptos_options)
+        .layer(axum::Extension(db_connection));
 
     // run our app with hyper
     // `axum::Server` is a re-export of `hyper::Server`

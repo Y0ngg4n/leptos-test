@@ -1,5 +1,15 @@
 use diesel::prelude::*;
 
+#[derive(Insertable)]
+#[diesel(table_name = crate::schema::pet_sitters)]
+#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
+pub struct NewPetSitters {
+    pub name: String,
+    pub capacity: i32,
+    pub status: String,
+    pub description: String,
+    pub duration: i32,
+}
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::pet_sitters)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]

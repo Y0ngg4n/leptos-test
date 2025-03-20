@@ -1,16 +1,33 @@
 pub mod app;
+#[cfg(feature = "ssr")]
 pub mod models;
+#[cfg(feature = "ssr")]
 pub mod schema;
-use diesel::prelude::*;
+
+#[cfg(feature = "ssr")]
+use diesel::sqlite::*;
+#[cfg(feature = "ssr")]
+use diesel_async::pooled_connection::bb8::*;
+#[cfg(feature = "ssr")]
+use diesel_async::sync_connection_wrapper::*;
 use dotenvy::dotenv;
 use std::env;
 
-pub fn establish_connection() -> SqliteConnection {
+#[cfg(feature = "ssr")]
+pub async fn establish_connection() -> Pool<SyncConnectionWrapper<SqliteConnection>> {
+    use diesel::prelude::*;
+    use diesel_async::pooled_connection::AsyncDieselConnectionManager;
+    use diesel_async::sync_connection_wrapper::*;
+    use diesel_async::AsyncConnection;
     dotenv().ok();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    SqliteConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+    let config =
+        AsyncDieselConnectionManager::<SyncConnectionWrapper<SqliteConnection>>::new(database_url);
+    return Pool::builder()
+        .build(config)
+        .await
+        .unwrap_or_else(|_| panic!("Error connecting the database!"));
 }
 
 #[cfg(feature = "hydrate")]
